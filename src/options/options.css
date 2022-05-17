@@ -1,0 +1,295 @@
+/* *************************************************
+ * * Core
+ * ************************************************* */
+
+p {
+    font-size: 14px;
+}
+
+.example {
+    font-size: 16px;
+}
+
+body {
+    margin-top: 20px;
+}
+
+table#table td:first-child {
+    text-align: center;
+}
+
+/*
+ * This keeps inputs (checkboxes, radios) approximately aligned with their
+ * corresponding labels. Otherwise, the inputs appear too low.
+ */
+#table td {
+    vertical-align: baseline;
+}
+
+/*
+ * However, revert the baseline alignment for the blocklist row, since that
+ * is a multi-line row that should have its contents vertically centered.
+ */
+#blocklist-settings-row td {
+    vertical-align: middle;
+}
+
+#autonomous-delay-value {
+    font-family: monospace;
+}
+
+/*
+ * Force the empty #status span to take up space
+ * (\200b is Unicode zero-width space).
+ */
+#status:after {
+    content: '\200b';
+}
+
+#autonomous-delay-value, #autonomous-delay {
+    vertical-align: middle;
+}
+
+#autonomous-settings {
+    border: none;
+}
+
+#autonomous-settings table td:first-child {
+    text-align: right;
+}
+
+#autonomous-settings[disabled] td:first-child,
+#autonomous-settings[disabled] #autonomous-delay-value {
+    color: rgb(197, 197, 197);
+}
+
+#autonomous-settings[disabled] img {
+    opacity: 23%;
+}
+
+#blocklist-information {
+    margin-top: 16px;
+}
+
+.button-spacer {
+    display: block;
+    height: 4px;
+}
+
+#forkme {
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 0;
+    width: 149px;
+    height: 149px;
+}
+
+details {
+    margin-bottom: 16px;
+}
+
+details > div {
+    margin-left: 32px;
+}
+
+summary {
+    outline: none;
+}
+
+.summary {
+    cursor: pointer;
+    border-bottom: 1px dotted;
+}
+
+.pattern, .url, .hostname {
+    color: blue;
+    font-family: monospace;
+}
+
+.label {
+    color: #586069;
+    border: 1px solid #e1e4e8;
+    border-radius: 7px;
+    padding: 1px 7px;
+    font-family: sans-serif;
+    font-size: 12px;
+    display: inline-block;
+}
+
+.nested {
+    margin-left: 32px;
+}
+
+.nested p {
+    margin-top: 7px;
+    margin-bottom: 7px ;
+}
+
+button[data-count="1"] span.plural {
+    display: none;
+}
+
+.global-highlight-icon {
+    /* Manually specify box-sizing so that Firefox doesn't use 'box-sizing: border-box'
+       as part of its default options page styling. */
+    box-sizing: content-box;
+    height: 19px;
+    width: 19px;
+    padding: 4px;
+    margin: -4px -1px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.global-highlight-icon:hover {
+    background-color: lightgray;
+}
+
+/* *************************************************
+ * * Blocklist View
+ * ************************************************* */
+
+#blocklist-nav {
+    position: sticky;
+    top: 0;
+    color: black;
+    background-color: white;
+}
+
+#blocklist-back {
+    cursor: pointer;
+    color: blue;
+    border-bottom: 1px dotted;
+}
+
+#blocklist-new {
+    display: flex;
+}
+
+#blocklist-new-input {
+    min-width: 100px;
+    flex-grow: 1;
+}
+
+#blocklist-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#blocklist-items-and-exceptions {
+    font-size: 12px;
+}
+
+#blocklist-items-and-exceptions td {
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.blocklist-data-col {
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#blocklist-items-and-exceptions > tr:hover {
+    background-color: lightyellow;
+}
+
+/* Hide non-item (i.e., exception) data when items list is shown. */
+#blocklist-view[data-list-source="items"] *[data-list-source]:not([data-list-source="items"]) {
+    display: none;
+}
+
+/* Hide non-exception (i.e., items) data when exceptions list is shown. */
+#blocklist-view[data-list-source="exceptions"] *[data-list-source]:not([data-list-source="exceptions"]) {
+    display: none;
+}
+
+/* Shrink the first and third columns, and expand the second. */
+.blocklist-type-col,
+.blocklist-remove-col {
+    white-space: nowrap;
+}
+.blocklist-data-col {
+    width: 99%;
+}
+
+.blocklist-data-col {
+    word-break: break-all;
+}
+
+.blocklist-remove {
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.blocklist-remove:hover {
+    filter: brightness(0.7);
+}
+
+/* *************************************************
+ * * Tooltip
+ * ************************************************* */
+
+a.tooltip {
+    outline: none;
+}
+
+a.tooltip:after {
+    /* Circled Information Source */
+    /* Use an SVG since the font used by default on macOS doesn't have "\1F6C8" */
+    content: url('info.svg');
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    padding: 0;
+    margin: 0;
+    transform: translateY(.125em);
+}
+
+a.tooltip:hover:after {
+    filter: brightness(0.6);
+}
+
+a.tooltip > span {
+    z-index: 10;
+    position: absolute;
+    left: 0;
+    display: none;
+    padding: 14px 20px;
+    margin-top: 40px;
+    margin-left: 20px;
+    margin-right: 20px;
+    width: auto;
+    max-width: 300px;
+    line-height: 16px;
+    text-align: left;
+}
+
+a.tooltip.top > span {
+    margin-top: -20px;
+    transform: translateY(-100%);
+}
+
+a.tooltip:hover > span {
+    display: inline;
+    color: #111;
+    border: 1px solid #DCA;
+    background: #fffAF0;
+    border-radius: 4px;
+    box-shadow: 5px 5px 8px #CCC;
+}
+
+/*
+ * Update tooltip icon tint within a disabled fieldset, and make sure
+ * filter is disabled so that brightness doesn't change on hover.
+ */
+fieldset[disabled] a.tooltip:after {
+    opacity: 23%;
+    filter: none;
+}
+
+/* Disable tooltip popup within a disabled fieldset. */
+fieldset[disabled] a.tooltip > * {
+    display: none;
+}
