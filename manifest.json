@@ -1,11 +1,11 @@
 {
-  "name": "Auto Highlight",
+  "name": "Selected Text Auto Summarizing",
   "version": "3.4.10",
-  "description": "*Auto Highlight* automatically highlights the important content on article pages.",
+  "description": "Use machine learning model to auto summarize of selected text in newspaper",
   "options_ui": {
     "page": "src/options/options.html"
   },
-  "permissions": ["activeTab", "contextMenus", "storage"],
+  "permissions": ["tabs", "activeTab", "contextMenus", "storage"],
   "optional_permissions": ["<all_urls>", "tabs", "clipboardWrite"],
   "background": {
     "scripts": ["src/utils.js", "src/matchPattern.js", "src/eventPage.js"],
@@ -16,12 +16,14 @@
       "19": "icons/0highlight19x19.png",
       "38": "icons/0highlight38x38.png"
     },
-    "default_title": "Toggle highlighting"
+    "default_title": "Toggle highlighting",
+    "default_popup": ""
   },
   "icons": {
     "16": "icons/16x16.png",
     "48": "icons/48x48.png",
     "128": "icons/128x128.png"
   },
-  "manifest_version": 2
+  "content_security_policy": "script-src 'self' https://ajax.googleapis.com https://cdnjs.cloudflare.com https://maxcdn.bootstrapcdn.com; object-src 'self';"
+,  "manifest_version": 2
 }

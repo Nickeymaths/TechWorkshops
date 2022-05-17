@@ -16,6 +16,9 @@ let NUM_HIGHLIGHT_STATES = 4;
 if (MOBILE)
     NUM_HIGHLIGHT_STATES = 2;
 
+// CURRENT FEATURE SUMMARY/HIGHLIGHT
+switch_state = 0
+
 // *****************************
 // * Utilities and Options
 // *****************************
@@ -380,6 +383,24 @@ function highlightAll(state) {
     });
 }
 
+function waitForWindowId(id,delay,maxTries,callback) {
+    let where = 'watchForWindow';
+    if(maxTries--<=0){
+        //Fail softly. You may want to do something else on failure to find the new window.
+        return;
+    }
+    //This type of window is a type:'tab', not type:'popup'.
+    if(!chrome.extension.getViews({windowId:id}).some(view=>{
+        if(typeof callback === 'function'){
+            callback(view);
+        }
+        return true;
+    })){
+        //Did not find the view for window ID. Keep trying
+        setTimeout(waitForWindowId,delay,id,delay,maxTries,callback);
+    }
+}
+
 summarization_server_url = "http://localhost:8000/summarize/"
 
 async function summarize(text, summarization_server_url) {
@@ -400,21 +421,14 @@ async function summarize(text, summarization_server_url) {
     }
 }
 
-var choice = 0
 chrome.browserAction.onClicked.addListener(async function(tab) {
     // To do
-    if (choice % 2 === 0)
+    if (switch_state === 0) {
+        console.log("Highlight");
         highlight(tab.id, true, null, 'document_end');
-    else {
-        let result = await summarize("Consider the problem of estimating the probability that a \
-        test point in N-dimensional Euclidean space belongs to a set, where we are given \
-        sample points that definitely belong to that set. Our first step would be to find \
-        the centroid or center of mass of the sample points. Intuitively, the closer the \
-        point in question is to this center of mass, the more likely it is to belong to \
-        the set.", summarization_server_url)
-        console.log(result)
+    } else if (switch_state === 1){
+        console.log("summary")
     }
-    choice += 1
 });
 
 chrome.permissions.onRemoved.addListener(function() {
@@ -487,6 +501,53 @@ chrome.permissions.onRemoved.addListener(function() {
             }
             chrome.contextMenus.create(properties);
         }
+        // Add switch item
+        let switch_menu_id = 'switch_' + context;
+        properties = {
+            type: 'normal',
+            id: switch_menu_id,
+            title: 'Switch',
+            contexts: [context]
+        };
+        if (icons_supported) {
+            properties.icons = {
+                '16': 'icons/summary16.png',
+                '48': 'icons/summary48.png',
+            };
+        } else {
+            properties.title = String.fromCodePoint('0x1F39B') + ' ' + properties.title;
+        }
+        chrome.contextMenus.create(properties);
+        // Add summary feature
+        const switch_summary_id = `switch_summary_${context}`;
+        properties = {
+            type: 'normal',
+            id: switch_summary_id,
+            title: "Summarization",
+            contexts: [context],
+            parentId: switch_menu_id
+        };
+        if (icons_supported) {
+            const iconName = 'summarization';
+        } else {
+            properties.title = properties.title;
+        }
+        chrome.contextMenus.create(properties);
+        // Add highlight feature
+        const switch_highlight_id = `switch_highlight_${context}`;
+        properties = {
+            type: 'normal',
+            id: switch_highlight_id,
+            title: "Highlight",
+            contexts: [context],
+            parentId: switch_menu_id
+        };
+        if (icons_supported) {
+            const iconName = 'highlight';
+        } else {
+            properties.title = properties.title;
+        }
+        chrome.contextMenus.create(properties);
 
         // Add global highlighting items
         const global_menu_id = 'global_' + context;
@@ -631,6 +692,10 @@ chrome.permissions.onRemoved.addListener(function() {
     const clipboard_re = new RegExp(`^clipboard_(?:${joined_contexts})$`);
     // Matches pattern: 'options_CONTEXT'
     const options_re = new RegExp(`^options_(?:${joined_contexts})$`);
+    // Matches pattern: 'switch_summary'
+    const switch_summary_re = new RegExp(`^switch_summary_(?:${joined_contexts})$`);
+    // Matches pattern: 'switch_summary'
+    const switch_highlight_re = new RegExp(`^switch_highlight_(?:${joined_contexts})$`);
 
     chrome.contextMenus.onClicked.addListener(function(info, tab) {
         const id = info.menuItemId;
@@ -691,6 +756,38 @@ chrome.permissions.onRemoved.addListener(function() {
                 options[key].push(item);
                 saveOptions(options);
             });
+        } else if (id.match(switch_summary_re) !== null) {
+            // To do
+            const setIcon = function() {
+                const path16 = 'icons/summary16.png';
+                const path48 = 'icons/summary48.png';
+                chrome.browserAction.setIcon({
+                    path: {
+                        '16': path16,
+                        '48': path48
+                    },
+                    tabId: tab.id
+                });
+                chrome.browserAction.default
+            };
+            setIcon();
+            switch_state = 1;
+            chrome.browserAction.setPopup({popup: 'src/popup.html'})
+        } else if (id.match(switch_highlight_re) !== null) {
+            const setIcon = function() {
+                const path19 = 'icons/' + 0 + 'highlight19x19.png';
+                const path38 = 'icons/' + 0 + 'highlight38x38.png';
+                chrome.browserAction.setIcon({
+                    path: {
+                        '19': path19,
+                        '38': path38
+                    },
+                    tabId: tab.id
+                });
+            };
+            setIcon();
+            switch_state = 0;
+            chrome.browserAction.setPopup({popup: ''})
         } else {
             throw new Error('Unhandled menu ID: ' + id);
         }

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="vn">
+  <head>
+    <meta charset="utf-8">
+    <title>Selected Text Auto Summarizing</title>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- own CSS and JavaScript -->
+    <link href="popup_styles.css" rel="stylesheet">
+    <script src="popup.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="navbar navbar-custom">
+          <div class="navbar-brand text-white"><b>Text Auto Summarization Tool</b></div>
+      </div>
+    </header>
+    <main>
+      <!-- default content if no text selected -->
+      <div class="accordion" id="accordion">
+        <div class="card">
+          <div class="card-header" id="headingOne">
+            <h5 class="mb-0">
+              <button class="btn" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                <b class="text-dark">Summarized text</b>
+              </button>
+            </h5>
+          </div>
+          <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+            <div id="summarized-text" class="card-body">Summarizing...</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header" id="headingTwo">
+            <h5 class="mb-0">
+              <button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                <b class="text-dark">Original Text</b>
+              </button>
+            </h5>
+          </div>
+          <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+            <div class="card-body">
+              <p id="text"></p>
+              <hr>
+              <p><em>Note: text is stripped of characters other than a-z/A-Z, '.', '?', '!' and spaces, and consecutive spaces and line breaks are reduced to a single space.</em></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header" id="headingThree">
+            <h5 class="mb-0">
+              <button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                <b class="text-dark">Noted Instructions for Use</b>
+              </button>
+            </h5>
+          </div>
+          <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+            <div class="card-body">
+              <p>
+                <em>
+                * Select text then click the icon of extension to summarize. Your summarized text will be showed after few seconds.<br>
+                * The original text is the text you selected, which filtered out the pictures and preprocessed automatically.
+                However, the input and output maxium token is 768 and 60 respectively.<br>
+                * The only support language is English. Maybe we update the other in next versions.
+                </em>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header" id="headingFour">
+            <h5 class="mb-0">
+              <button class="btn collapsed" type="button" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                <b class="text-dark">About us</b>
+              </button>
+            </h5>
+          </div>
+          <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+            <div class="card-body" style="text-align: center">
+              <p> Technology Workshops - UET</p>
+              <p> Projects of Group 3 - AI for text</p>
+              <p> Lectuer: Assoc. Prof. Le Sy Vinh</p>
+              <hr>
+              <span style="font-size: 90%; text-align: left">
+                <em>
+                Since 2022<br>
+                Contact us: Đại học Công nghệ, 144 Xuân Thủy, HN
+                </em>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
