@@ -17,7 +17,7 @@ if (MOBILE)
     NUM_HIGHLIGHT_STATES = 2;
 
 // CURRENT FEATURE SUMMARY/HIGHLIGHT
-switch_state = 0
+switch_state = 1
 
 // *****************************
 // * Utilities and Options
@@ -531,6 +531,7 @@ chrome.permissions.onRemoved.addListener(function() {
             const iconName = 'summarization';
         } else {
             properties.title = properties.title;
+
         }
         chrome.contextMenus.create(properties);
         // Add highlight feature
