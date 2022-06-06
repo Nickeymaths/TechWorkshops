@@ -1,6 +1,6 @@
 {
   "name": "Selected Text Auto Summarizing",
-  "version": "3.4.10",
+  "version": "1.0.0",
   "description": "Use machine learning model to auto summarize of selected text in newspaper",
   "options_ui": {
     "page": "src/options/options.html"

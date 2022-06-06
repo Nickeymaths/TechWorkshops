@@ -5,6 +5,7 @@ async function summarize(text, summarization_server_url) {
         alert('Your text is too short!');
 
     } else {
+        window.document.querySelector ("#text").innerHTML = text;
         let res = await fetch(summarization_server_url, {
             headers: {
               'Accept': 'application/json',
@@ -24,4 +25,5 @@ chrome.tabs.executeScript({
     let result = await summarize(selection[0], summarization_server_url);
     // console.log(window.document.querySelector("#summarized-text").innerHTML)
     window.document.querySelector("#summarized-text").innerHTML = result;
+
 })

@@ -49,7 +49,7 @@ const revokeButton = document.getElementById('revoke-permissions');
 
 const versionElement = document.getElementById('version');
 
-versionElement.innerText = backgroundPage.getVersion();
+versionElement.innerText = " ";
 
 /***********************************
  * Views
